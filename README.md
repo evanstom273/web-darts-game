@@ -1,31 +1,27 @@
 # The Oche — Darts Club
 
-Complete source from the published darts game, including the settings update with both throwing mechanics.
+A React, Vite, Tailwind CSS and TypeScript migration of the published darts game, including both throwing mechanics. The game rules, timing, canvas artwork, theme and responsive layout are preserved.
 
 ## Run locally
 
-The game uses standard JavaScript modules, so serve the folder over HTTP rather than opening `index.html` directly.
+Install Node.js 24 or newer, then run these commands from the repository root:
 
-1. Extract the ZIP.
-2. Open a terminal inside the `the-oche` folder.
-3. If Python is installed, start a local server:
+```sh
+npm ci
+npm run dev
+```
 
-   Windows:
-   ```sh
-   py -m http.server 8000
-   ```
+Open the local URL printed by Vite (normally http://localhost:5173). Press Ctrl+C to stop the server.
 
-   macOS/Linux:
-   ```sh
-   python3 -m http.server 8000
-   ```
+```sh
+npm test           # Scoring, throwing and React integration regression tests
+npm run typecheck  # Strict TypeScript checking, including tests and configuration
+npm run build      # Type-check and produce the static site in dist/
+npm run preview    # Serve the production build locally
+npm run format     # Format source and configuration
+```
 
-   If Windows provides `python` instead of `py`, use `python -m http.server 8000`.
-
-4. Open http://localhost:8000 in your browser.
-5. Press Ctrl+C in the terminal to stop the server.
-
-Any static web server can serve this folder. There is no build step, dependency installation, backend, API key, or paid service required by the game.
+The built game still runs entirely in the browser, with no backend, API key or paid service.
 
 ## Included game features
 
@@ -54,21 +50,29 @@ The aiming-speed slider is in Settings. The default speed is 0.45. The slower ch
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Game screen, score panels, settings, instructions, and dialogs |
-| `style.css` | Theme, desktop/mobile layout, and control styling |
-| `game.js` | Game state, input, canvas rendering, computer turns, and sound |
-| `engine.js` | Dartboard scoring, busts, double-out, and checkout routes |
-| `throwing.js` | Three-stage guide movement, charge timing, and release scatter |
+| `index.html`, `src/main.tsx` | HTML metadata and React entry point |
+| `src/App.tsx`, `src/components/*.tsx` | Game screen, score panels, settings, instructions and dialogs |
+| `src/styles.css` | Original theme and desktop/mobile styling, with compiled Tailwind utilities |
+| `src/game/controller.ts` | Typed game state, input, canvas rendering, computer turns and sound |
+| `src/game/engine.ts` | Dartboard scoring, busts, double-out and checkout routes |
+| `src/game/throwing.ts` | Three-stage guide movement, charge timing and release scatter |
+| `src/game/types.ts` | Shared game, UI and optional browser-tool types |
+| `vite.config.ts`, `tsconfig.json` | Vite, React, Tailwind and strict TypeScript configuration |
+| `tests/` | Scoring and React/gameplay regression coverage |
 
-These are the readable source files used by the live site, not a compiled bundle. The canvas draws the board and darts; Web Audio produces the sounds. There are no separate image or sound assets.
+All application code, tests and build configuration use TypeScript. React subscribes to game updates; the canvas drawing and timing meter stay outside React's render loop. Animation frames, input listeners and optional agent registrations are cleaned up on unmount, including development Strict Mode and hot reloads.
+
+The original stylesheet remains in place. Tailwind is integrated through its Vite plugin with Preflight omitted to preserve the original browser defaults and appearance. The canvas draws the board and darts; Web Audio produces the sounds. There are no separate image or sound assets.
 
 Throwing preferences are saved locally on the device. Match progress is held in memory and resets when the page is reloaded. The optional page-scoped agent tools are feature-detected and are not required in normal browsers.
 
 ## Put it in a repository or host it
 
-Use the contents of this folder as the repository root. `index.html` is the entry point. Deploy the same folder on any static host; no build command is needed. The export does not include the original site's private hosting identity or Git metadata.
+Use `npm ci` to install dependencies and `npm run build` as the build command. Deploy `dist/` on a static host. Vite uses relative asset URLs, so the build works both at a domain root and under GitHub Pages' `/web-darts-game/` path.
 
-## Export version
+The included GitHub Actions workflow runs tests and the production build for pull requests. Pushes to `main` also deploy the built `dist/` artifact to GitHub Pages.
+
+## Original export provenance
 
 Published source commit: `ca47c832ad6ba9d1fe85554d510bc88050af70d8`
 Export date: 8 October 2026

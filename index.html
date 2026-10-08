@@ -1,62 +1,25 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101d19">
-  <meta name="description" content="Step up to The Oche. A skill-based darts game with 501 matches, a computer opponent, local two-player and free practice.">
-  <title>The Oche — Darts Club</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23101d19'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23d9b46a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23d9b46a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23d9b46a'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./game.js"></script>
-</head>
-<body>
-  <div class="app-shell">
-    <header class="topbar">
-      <a class="wordmark" href="./" aria-label="The Oche home"><span class="brand-target" aria-hidden="true">◎</span><span>THE OCHE<small>DARTS CLUB</small></span></a>
-      <nav aria-label="Game controls"><button id="help-button" class="quiet-button">How to play</button><button id="settings-button" class="quiet-button" aria-label="Settings"><span class="settings-icon" aria-hidden="true">⚙</span><span class="settings-button-label">Settings</span></button><button id="new-game" class="outline-button">New game</button></nav>
-    </header>
-    <main>
-      <div class="match-heading"><div><span class="eyebrow">STEP UP TO THE LINE</span><h1 id="mode-heading">501 <span>Double out</span></h1></div><div class="match-meta"><span id="match-format">BEST OF 3 LEGS</span><strong id="leg-label">Leg 1</strong></div></div>
-      <div class="game-layout">
-        <section class="board-section" aria-label="Dartboard and aiming controls">
-          <div class="board-frame"><canvas id="dartboard" width="700" height="700" tabindex="0" role="img" aria-label="Interactive dartboard. Tap or drag to aim. Use arrow keys for fine aiming, then hold and release Space to throw."></canvas><div id="board-announcement" class="board-announcement" aria-hidden="true"></div></div>
-          <div class="board-caption"><span class="caption-rule"></span><span id="board-tip">Tap or drag on the board to aim</span><span class="caption-rule"></span></div>
-        </section>
-        <aside class="match-panel" aria-label="Scoreboard and throw controls">
-          <section class="scoreboard" aria-label="Scores"><div class="scoreboard-heading"><span id="scoreboard-label">THE MATCH</span><span id="match-difficulty">CLUB</span></div><div id="player-scores"></div></section>
-          <section class="throw-panel"><div class="visit-heading"><span id="turn-label">YOUR THROW</span><span id="visit-number">VISIT 1</span></div><div id="dart-slots" class="dart-slots" aria-label="Current visit"></div><div class="visit-bottom"><span>This visit <strong id="visit-total">0</strong></span><span id="checkout-hint">Aim for the treble 20</span></div>
-            <div class="shot-feedback" id="shot-feedback" role="status" aria-live="polite"><strong>Find your rhythm.</strong><span>Three darts. Make them count.</span></div>
-            <div id="aim-row" class="aim-row"><span id="aim-heading">AIMING AT</span><strong id="aim-label">Treble 20</strong></div>
-            <div class="prototype-steps hidden" id="prototype-steps" aria-label="Throw stages"><span id="step-height">1 · Height</span><span id="step-direction">2 · Direction</span><span id="step-release">3 · Release</span></div>
-            <div id="timing-controls"><div class="release-meter" id="release-meter" role="meter" aria-label="Throw timing, release in the gold zone" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="sweet-spot"></span><span class="meter-marker" id="meter-marker"></span></div>
-            <div class="meter-labels"><span id="meter-start-label">HOLD</span><span id="meter-zone-label">RELEASE IN GOLD</span></div></div>
-            <button id="throw-button" class="throw-button"><span id="throw-label">Hold to throw</span><span id="throw-shortcut">then release in the gold zone</span></button>
-            <button id="continue-button" class="throw-button hidden">Next visit</button>
-            <p id="control-note" class="control-note">Hold the button or <kbd>Space</kbd>. Release to throw.</p>
-          </section>
-          <details class="history"><summary>Visit history <span id="history-count">0</span></summary><div id="visit-history"><p class="empty-history">Your first visit starts here.</p></div></details>
-        </aside>
-      </div>
-      <footer><span>A LITTLE TOUCH. A LITTLE NERVE.</span><span id="footer-controls">Tap to aim <i>·</i> Hold to draw <i>·</i> Release to throw</span></footer>
-    </main>
-  </div>
-  <dialog id="settings-dialog" aria-labelledby="settings-title">
-    <button class="dialog-close" data-close="settings-dialog" aria-label="Close settings">×</button>
-    <span class="eyebrow">FIND YOUR THROW</span><h2 id="settings-title">Settings</h2>
-    <p class="dialog-intro">Switch your throwing style at any point in a match.</p>
-    <fieldset id="throwing-options"><legend>Throwing mechanic</legend><div class="choice-grid two throwing-choices">
-      <label><input id="mechanic-classic" type="radio" name="throwing" value="classic" checked><span><strong>Original</strong><small>Tap to aim. Time the release.</small></span></label>
-      <label><input id="mechanic-prototype" type="radio" name="throwing" value="prototype"><span><strong>Three-stage</strong><small>Your ZIP’s moving guides.</small></span></label>
-    </div></fieldset>
-    <p id="mechanic-description" class="mechanic-description" aria-live="polite">Aim directly on the board, then hold and release in the gold zone.</p>
-    <div id="prototype-settings" class="hidden"><label class="speed-label" for="aiming-speed">Aiming speed <output id="speed-label" for="aiming-speed">Slow · 0.45</output></label><input id="aiming-speed" type="range" min="0.15" max="1.5" step="0.05" value="0.45"><p class="speed-note">Very slow to fast. The ZIP’s original speed is 0.45.</p></div>
-    <div class="sound-setting"><span>Game audio</span><button id="sound-toggle" class="outline-button" aria-pressed="false">Sound off</button></div>
-    <p class="settings-note">Your score and match stay in place. Your throwing preference is remembered on this device.</p>
-    <button class="gold-button" data-close="settings-dialog">Back to the board</button>
-  </dialog>
-  <dialog id="setup-dialog" aria-labelledby="setup-title"><form id="setup-form"><button class="dialog-close" type="button" data-close="setup-dialog" aria-label="Close new game">×</button><span class="eyebrow">BACK TO THE OCHE</span><h2 id="setup-title">Make it a match.</h2><p class="dialog-intro">Pick your game and step up.</p><fieldset><legend>Game</legend><div class="choice-grid"><label><input type="radio" name="mode" value="501" checked><span><strong>501</strong><small>The classic</small></span></label><label><input type="radio" name="mode" value="301"><span><strong>301</strong><small>A quick leg</small></span></label><label><input type="radio" name="mode" value="practice"><span><strong>Practice</strong><small>Find your range</small></span></label></div></fieldset><div id="match-options"><fieldset><legend>Play against</legend><div class="choice-grid two"><label><input type="radio" name="opponent" value="computer" checked><span><strong>Computer</strong><small>The house player</small></span></label><label><input type="radio" name="opponent" value="local"><span><strong>A friend</strong><small>Pass & play</small></span></label></div></fieldset><div class="settings-row"><label id="difficulty-setting">Computer level<select name="difficulty"><option value="casual">Casual</option><option value="club" selected>Club</option><option value="expert">Expert</option></select></label><label>Match length<select name="legs"><option value="1">One leg</option><option value="3" selected>Best of 3</option><option value="5">Best of 5</option></select></label></div></div><p class="setup-note">Straight in, double out. Starting a new game replaces the current one.</p><button type="submit" class="gold-button">Step up</button></form></dialog>
-  <dialog id="help-dialog" aria-labelledby="help-title"><button class="dialog-close" data-close="help-dialog" aria-label="Close instructions">×</button><span class="eyebrow">A QUICK WARM-UP</span><h2 id="help-title">It's all in the release.</h2><div id="classic-help"><ol class="instructions"><li><strong>Choose your spot.</strong><p>Tap or drag on the board to move the gold aiming ring. On a keyboard, focus the board and use the arrow keys. Hold Shift for fine adjustments.</p></li><li><strong>Draw, then let go.</strong><p>Hold the throw button or Space. Release as the marker crosses the gold band. An early release lands low; a late release lands high. A little natural sway keeps it interesting.</p></li><li><strong>Finish on a double.</strong><p>In 501 or 301, work down to exactly zero. Your last dart must hit a double ring or the bullseye. Go below zero, leave one, or reach zero without a double and you bust: your whole visit is undone.</p></li></ol></div><div id="prototype-help" class="hidden"><ol class="instructions"><li><strong>Stop the height guide.</strong><p>The blue horizontal line moves up and down. Press the main button or Space to stop it at your chosen height.</p></li><li><strong>Stop the direction guide.</strong><p>The blue vertical line moves sideways. Press again to lock it where the two guides meet.</p></li><li><strong>Hold, then release in green.</strong><p>Hold the main button or Space to fill the meter. Release around 65% for a tight throw. A poor release scatters the dart around your locked aim. Press Next dart to line up again.</p></li></ol><p class="help-note">Adjust the guide speed in Settings. Matches still finish on a double or bullseye. Going below zero, leaving one, or finishing without a double busts the whole visit.</p></div><div class="scoring-guide"><span><b>Outer ring</b>Double</span><span><b>Inner ring</b>Treble</span><span><b>Outer bull</b>25</span><span><b>Bullseye</b>50 · double</span></div><p class="help-note">Practice has no finish line. Throw, learn the timing, and chase a 180. The computer throws automatically when you continue after your visit.</p><button class="gold-button" data-close="help-dialog">Back to the board</button></dialog>
-  <dialog id="result-dialog" aria-labelledby="result-title"><span class="eyebrow" id="result-eyebrow">GAME SHOT</span><div class="result-number" id="result-number">1—0</div><h2 id="result-title">You take the leg.</h2><p id="result-description"></p><div class="result-stats" id="result-stats"></div><button class="gold-button" id="result-continue">Next leg</button><button class="result-new" id="result-new">Choose a new game</button></dialog>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#101d19" />
+    <meta
+      name="description"
+      content="Step up to The Oche. A skill-based darts game with 501 matches, a computer opponent, local two-player and free practice."
+    />
+    <title>The Oche — Darts Club</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23101d19'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23d9b46a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23d9b46a' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23d9b46a'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
